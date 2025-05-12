@@ -1,7 +1,7 @@
 import tensorflow as tf
 import numpy as np
 from pathlib import Path
-from src.app.utils.plant_details import plant_info
+from src.app.utils.plant_details import class_names
 
 class PlantIDModel:
     def __init__(self, model_path: str, model_name:str, dimensions):
@@ -15,15 +15,9 @@ class PlantIDModel:
             raise Exception(f"Failed to load the model from {model_path}: {str(e)}")
         self.img_width = dimensions
         self.img_height = dimensions
-        self.class_names = [
-            'aloevera', 'banana', 'bilimbi', 'cantaloupe', 'cassava', 'coconut', 'corn',
-            'cucumber', 'curcuma', 'eggplant', 'galangal', 'ginger', 'guava', 'kale',
-            'longbeans', 'mango', 'melon', 'orange', 'paddy', 'papaya', 'peper chili',
-            'pineapple', 'pomelo', 'shallot', 'soybeans', 'spinach', 'sweet potatoes',
-            'tobacco', 'waterapple', 'watermelon'
-        ]
+        self.class_names = class_names
 
-    def predict(self, image_array: np.ndarray) -> dict:
+    def predict(self, image_array: np.ndarray, ensemble = False) -> dict:
         """Make a prediction on the preprocessed image array."""
         try:
             # Predict using the model
@@ -31,9 +25,9 @@ class PlantIDModel:
             predicted_class = self.class_names[np.argmax(predictions[0])]
             confidence = float(np.max(predictions[0]))
 
-            # get the class details for the predicted class name
-            class_details = plant_info[predicted_class]
+            if ensemble:
+                return predictions
 
-            return {"class_name": predicted_class, "confidence": confidence, "class_details":class_details}
+            return {"class_name": predicted_class, "confidence": confidence}
         except Exception as e:
             raise Exception(f"Error during prediction: {str(e)}")

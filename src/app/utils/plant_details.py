@@ -1,3 +1,11 @@
+class_names = [
+            'aloevera', 'banana', 'bilimbi', 'cantaloupe', 'cassava', 'coconut', 'corn',
+            'cucumber', 'curcuma', 'eggplant', 'galangal', 'ginger', 'guava', 'kale',
+            'longbeans', 'mango', 'melon', 'orange', 'paddy', 'papaya', 'peper chili',
+            'pineapple', 'pomelo', 'shallot', 'soybeans', 'spinach', 'sweet potatoes',
+            'tobacco', 'waterapple', 'watermelon'
+        ]
+
 plant_info = {
     "mango": {
         "scientific_name": "Mangifera indica",
