@@ -4,7 +4,7 @@ from pathlib import Path
 from src.app.utils.plant_details import plant_info
 
 class PlantIDModel:
-    def __init__(self, model_path: str, model_name:str):
+    def __init__(self, model_path: str, model_name:str, dimensions):
         """Initialize the model by loading it from the given path."""
         try:
             self.model = tf.keras.models.load_model(model_path)
@@ -13,8 +13,8 @@ class PlantIDModel:
             raise Exception(f"Model file not found at {model_path}")
         except Exception as e:
             raise Exception(f"Failed to load the model from {model_path}: {str(e)}")
-        self.img_height = 180
-        self.img_width = 180
+        self.img_width = dimensions
+        self.img_height = dimensions
         self.class_names = [
             'aloevera', 'banana', 'bilimbi', 'cantaloupe', 'cassava', 'coconut', 'corn',
             'cucumber', 'curcuma', 'eggplant', 'galangal', 'ginger', 'guava', 'kale',

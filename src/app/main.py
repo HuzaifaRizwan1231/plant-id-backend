@@ -21,10 +21,16 @@ app.add_middleware(
     allow_headers=["*"], 
 )
 
+dimensions = {
+    "resnet":180,
+    "efficientnet": 224,
+    "mobilenet":180
+}
+
 # Loading all the models
-resnet_model = PlantIDModel("AIPlantID_ResNet50.keras", "resnet")
-efficientnet_model = PlantIDModel("AIPlantID_EfficientNetB0.keras", "efficientnet")
-mobilenet_model = PlantIDModel("AIPlantID_ResNet50.keras", "mobilenet")
+resnet_model = PlantIDModel("AIPlantID_ResNet50.keras", "resnet", dimensions["resnet"])
+efficientnet_model = PlantIDModel("AIPlantID_EfficientNetB0.keras", "efficientnet", dimensions["efficientnet"])
+mobilenet_model = PlantIDModel("AIPlantID_ResNet50.keras", "mobilenet", dimensions["mobilenet"])
 
 @app.post("/predict", response_model=PredictionResponse)
 async def predict(file: UploadFile = File(...), model_name: str = Form(...)):
@@ -36,7 +42,7 @@ async def predict(file: UploadFile = File(...), model_name: str = Form(...)):
         
         # Read and preprocess the image
         image_bytes = await file.read()
-        image_array = preprocess_image(image_bytes)
+        image_array = preprocess_image(image_bytes, dimensions[model_name])
         
         # Make prediction
         if model_name == "resnet":
