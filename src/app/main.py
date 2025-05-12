@@ -24,13 +24,13 @@ app.add_middleware(
 dimensions = {
     "resnet":180,
     "efficientnet": 224,
-    "mobilenet":180
+    "mobilenet":224
 }
 
 # Loading all the models
 resnet_model = PlantIDModel("AIPlantID_ResNet50.keras", "resnet", dimensions["resnet"])
 efficientnet_model = PlantIDModel("AIPlantID_EfficientNetB0.keras", "efficientnet", dimensions["efficientnet"])
-mobilenet_model = PlantIDModel("AIPlantID_ResNet50.keras", "mobilenet", dimensions["mobilenet"])
+mobilenet_model = PlantIDModel("AIPlantID_MobileNet_v2.keras", "mobilenet", dimensions["mobilenet"])
 
 @app.post("/predict", response_model=PredictionResponse)
 async def predict(file: UploadFile = File(...), model_name: str = Form(...)):
